@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Login from './src/screens/Login/Login'
 import Register from './src/screens/Register/Register'
-import HomeMenu from './src/screens/HomeMenu/HomeMenu'
+import HomeMenu from './src/components/HomeMenu/HomeMenu'
 
 export default function App() {
   return (
