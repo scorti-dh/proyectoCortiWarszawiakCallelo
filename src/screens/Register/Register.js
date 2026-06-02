@@ -24,7 +24,7 @@ function register(email, password, username) {
 
  return (
    <View style={styles.container}>
-     <Text>Login</Text>
+     <Text>Register</Text>
 
 
      <TextInput
@@ -53,8 +53,8 @@ function register(email, password, username) {
      />
 
 
-     <Pressable style={style.button} onPress={() => register(email, password, username)}>
-       <Text style={style.buttonText}>Login</Text>
+     <Pressable style={styles.button} onPress={() => register(email, password, username)}>
+       <Text style={styles.buttonText}>Login</Text>
      </Pressable>
    </View>
  );

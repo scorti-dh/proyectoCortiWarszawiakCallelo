@@ -1,18 +1,19 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+const Tab = createBottomTabNavigator();
 import { FontAwesome } from '@expo/vector-icons';
 
 import Home from "../../screens/Home/Home";
-import Usuarios from "../../screens/Usuarios/Usuarios";
-import NuevoPost from "../../screens/NuevoPost/NuevoPost";
+import Perfil from "../../screens/Perfil/Perfil";
+import CrearPost from "../../screens/CrearPost/CrearPost";
+import StackNav from "../StackNav/StackNav";
 
-const Tab = createBottomTabNavigator();
 
 function HomeMenu() {
   return (
     <Tab.Navigator screenOptions={{ tabBarShowLabel: false }}>
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="StackNav"
+        component={StackNav}
         options={{
           tabBarIcon: () => (
             <FontAwesome name="home" size={24} color="black" />
@@ -21,8 +22,8 @@ function HomeMenu() {
       />
 
       <Tab.Screen
-        name="Nuevo post"
-        component={NuevoPost}
+        name="CrearPost"
+        component={CrearPost}
         options={{
           tabBarIcon: () => (
             <FontAwesome name="plus-square" size={24} color="black" />
@@ -32,7 +33,7 @@ function HomeMenu() {
 
       <Tab.Screen
         name="Usuarios"
-        component={Usuarios}
+        component={Perfil}
         options={{
           tabBarIcon: () => (
             <FontAwesome name="users" size={24} color="black" />
