@@ -39,13 +39,16 @@ function Login(props) {
 
             <Text>{error}</Text>
 
-            <Pressable style={styles.button} onPress={() => login()}>
-                <Text style={styles.buttonText}>Login</Text>
+            <Pressable style={styles.button} onPress={() => props.navigation.navigate('Register')}>
+                <Text style={styles.buttonText}>Registrarse</Text>
             </Pressable>
 
-            <Pressable onPress={() => props.navigation.navigate('Register')}>
-                <Text>Ir a Register</Text>
+            <Pressable style={styles.button} onPress={() => props.navigation.navigate('HomeMenu')}>
+                <Text style={styles.buttonText}>Login(ir al home)</Text>
             </Pressable>
+
+
+
         </View>
     );
 }
