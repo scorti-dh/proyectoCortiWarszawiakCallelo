@@ -28,7 +28,7 @@ console.log("HomeMenu:", HomeMenu);
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='HomeMenu'a
+          name='HomeMenu'
           component={HomeMenu}
           options={{ headerShown: false }} 
           />
