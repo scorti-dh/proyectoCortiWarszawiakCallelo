@@ -32,6 +32,7 @@ console.log("HomeMenu:", HomeMenu);
           component={HomeMenu}
           options={{ headerShown: false }} 
           />
+    
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -17,6 +17,18 @@ function Login(props) {
       });
   }
 
+    useEffect(
+    () => {
+        auth.onAuthStateChanged(
+            user=>{
+                if(user) {
+                    props.navigation.navigate("homeMenu")
+                }
+            }
+        )
+    }
+  )
+
   return (
     <View style={styles.container}>
       <View style={styles.loginBox}>
