@@ -153,6 +153,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
+   error: {
+    color: '#dc3545',
+    fontWeight: 'bold',
+    marginBottom: 10,
+  }
 });
 
 export default Register;

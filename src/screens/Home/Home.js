@@ -79,13 +79,13 @@ function Home(props) {
                     <Text>Quitar me gusta</Text>
                 </Pressable>
 
-                <Pressable
-                    onPress={() =>
-                        props.navigation.navigate('Comments', { id: item.id })
-                    }
-                >
-                    <Text>Comentar💬</Text>
-                </Pressable>
+              <Pressable
+    onPress={() =>
+        props.navigation.navigate('Comentarios', { id: item.id })
+    }
+>
+    <Text>Comentar💬</Text>
+</Pressable>
 
             </View>
         );
