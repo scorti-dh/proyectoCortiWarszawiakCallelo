@@ -6,6 +6,7 @@ function Register(props) {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   function register(email, password, username) {
     auth.createUserWithEmailAndPassword(email, password)
@@ -19,7 +20,9 @@ function Register(props) {
           props.navigation.navigate('Login');
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setError(error.message);
+      });
   }
 
   return (
@@ -53,14 +56,16 @@ function Register(props) {
           value={password}
         />
 
-        <Pressable 
-          style={styles.button} 
+        <Text>{error}</Text>
+
+        <Pressable
+          style={styles.button}
           onPress={() => register(email, password, username)}
         >
           <Text style={styles.buttonText}>Registrarse</Text>
         </Pressable>
 
-        <Pressable 
+        <Pressable
           onPress={() => props.navigation.navigate('Login')}
           style={styles.loginLink}
         >
