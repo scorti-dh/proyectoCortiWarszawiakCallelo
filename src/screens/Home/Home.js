@@ -72,7 +72,7 @@ function Home(props) {
                 </Text>
 
                 <Pressable onPress={() => like(item.id)}>
-                    <Text>Me gusta</Text>
+                    <Text>Me gusta♥️</Text>
                 </Pressable>
 
                 <Pressable onPress={() => dislike(item.id)}>
@@ -84,7 +84,7 @@ function Home(props) {
                         props.navigation.navigate('Comments', { id: item.id })
                     }
                 >
-                    <Text>Comentar</Text>
+                    <Text>Comentar💬</Text>
                 </Pressable>
 
             </View>
@@ -119,19 +119,34 @@ function Home(props) {
 const styles = StyleSheet.create({
 
     container: {
-        flex: 1,
-        padding: 20
+         flex: 1,
+        backgroundColor: '#f5f5f5',
+        padding: 15
     },
 
     title: {
-        fontSize: 24,
-        marginBottom: 20
+        fontSize: 28,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 20,
+        color: '#333'
     },
 
     post: {
-        borderWidth: 1,
-        padding: 10,
-        marginBottom: 10
+        backgroundColor: '#fff',
+        borderRadius: 12,
+        padding: 15,
+        marginBottom: 15,
+
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+
+        elevation: 4
     }
 
 });
