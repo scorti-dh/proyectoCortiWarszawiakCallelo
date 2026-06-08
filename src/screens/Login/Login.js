@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, Pressable, TextInput, StyleSheet } from 'react-native';
 import { auth } from '../../firebase/config';
 
@@ -20,13 +20,13 @@ function Login(props) {
     useEffect(
     () => {
         auth.onAuthStateChanged(
-            user=>{
-                if(user) {
-                    props.navigation.navigate("homeMenu")
+            username=>{
+                if(username) {
+                    props.navigation.navigate("HomeMenu")
                 }
             }
         )
-    }
+    },[]
   )
 
   return (
