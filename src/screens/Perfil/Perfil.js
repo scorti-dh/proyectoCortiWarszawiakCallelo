@@ -54,6 +54,8 @@ function Perfil() {
                 <Post />
             </View>
 
+            
+
             <Pressable onPress={logout} style={styles.logoutButton}>
                 <Text styles={styles.logoutText}>Logout</Text>
             </Pressable>

@@ -28,6 +28,8 @@ function Home(props) {
 
             });
 
+        return () => unsubscribe();
+
     }, []);
 
     function like(idDocumento) {
@@ -56,45 +58,64 @@ function Home(props) {
 
     function renderPost({ item }) {
 
+        const likes = item.data.likes ? item.data.likes : [];
+        const leGusto = likes.includes(auth.currentUser.email);
+
         return (
             <View style={styles.post}>
 
-                <Text>
+                <Text style={styles.owner}>
                     {item.data.owner}
                 </Text>
 
-                <Text>
+                <Text style={styles.description}>
                     {item.data.description}
                 </Text>
 
-                <Text>
-                    Likes: {item.data.likes.length}
+                <Text style={styles.likes}>
+                    Likes: {likes.length}
                 </Text>
 
-                <Pressable onPress={() => like(item.id)}>
-                    <Text>Me gusta♥️</Text>
-                </Pressable>
+                <View style={styles.buttonsContainer}>
 
-                <Pressable onPress={() => dislike(item.id)}>
-                    <Text>Quitar me gusta</Text>
-                </Pressable>
 
-              <Pressable
-    onPress={() =>
-        props.navigation.navigate('Comentarios', { id: item.id })
-    }
->
-    <Text>Comentar💬</Text>
-</Pressable>
 
+
+                    <View style={styles.likeButtonsContainer}>
+
+
+                        <Pressable
+                            style={leGusto ? styles.dislikeButton : styles.button}
+                            onPress={() => leGusto ? dislike(item.id) : like(item.id)}
+                        >
+                            <Text style={leGusto ? styles.dislikeText : styles.buttonText}>
+                                {leGusto ? 'Quitar me gusta' : 'Me gusta'}
+                            </Text>
+                        </Pressable>
+
+
+                    </View>
+                    
+                    <Pressable
+                        style={styles.commentButton}
+                        onPress={() =>
+                            props.navigation.navigate('Comentarios', { id: item.id })
+                        }
+                    >
+                        <Text style={styles.buttonText}>Comentar 💬</Text>
+                    </Pressable>
+                    
+                </View>
+            
             </View>
         );
     }
 
+
     if (loading) {
         return (
-            <View>
-                <Text>Cargando...</Text>
+            <View style={styles.container}>
+                <Text style={style.loadingText}>Cargando...</Text>
             </View>
         );
     }
@@ -119,36 +140,111 @@ function Home(props) {
 const styles = StyleSheet.create({
 
     container: {
-         flex: 1,
-        backgroundColor: '#f5f5f5',
-        padding: 15
+        flex: 1,
+        padding: 20,
+        backgroundColor: '#fff',
     },
 
     title: {
-        fontSize: 28,
+        fontSize: 24,
         fontWeight: 'bold',
-        textAlign: 'center',
         marginBottom: 20,
-        color: '#333'
     },
 
     post: {
-        backgroundColor: '#fff',
-        borderRadius: 12,
         padding: 15,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        borderRadius: 10,
+        backgroundColor: '#f9f9f9',
         marginBottom: 15,
+    },
 
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
+    owner: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 8,
+    },
 
-        elevation: 4
+    description: {
+        fontSize: 15,
+        marginBottom: 10,
+        lineHeight: 20,
+    },
+
+    likes: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginBottom: 12,
+    },
+
+    buttonsContainer: {
+        marginTop: 5,
+    },
+
+    likeButtonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        gap: 10,
+        marginBottom: 10,
+    },
+
+    button: {
+        flex: 1,
+        backgroundColor: '#28a745',
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+
+    buttonDos: {
+        flex: 1,
+        backgroundColor: '#901954',
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+
+    commentButton: {
+        backgroundColor: '#28a745',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginTop: 5,
+    },
+
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+
+    dislikeButton: {
+        flex: 1,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#dc3545',
+        backgroundColor: '#fff',
+    },
+
+    dislikeText: {
+        color: '#dc3545',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    loadingText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginTop: 25,
     }
-
 });
 
 export default Home;
+
+
