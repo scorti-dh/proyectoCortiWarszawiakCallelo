@@ -10,9 +10,8 @@ import StackNav from "../StackNav/StackNav";
 
 function HomeMenu() {
   return (
-    <Tab.Navigator 
-    initialRouteName="Perfil"
-    screenOptions={{ tabBarShowLabel: false }}>
+    <Tab.Navigator
+      screenOptions={{ tabBarShowLabel: false }}>
       <Tab.Screen
         name="StackNav"
         component={StackNav}
