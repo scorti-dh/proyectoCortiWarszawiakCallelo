@@ -10,7 +10,7 @@ function Comentarios(props) {
     const idPost = props.route.params.id;
 
     useEffect(() => {
-        db.collection('comments')
+        const unsubscribe = db.collection('comments')
             .where('postId', '==', idPost)
             .onSnapshot((docs) => {
                 let comentariosArray = [];
@@ -24,9 +24,17 @@ function Comentarios(props) {
 
                 setComentarios(comentariosArray);
             });
+
+        return () => unsubscribe();
+
     }, []);
 
     function agregarComentario() {
+        if (comentario === '') {
+            setError('El comentario no puede estar vacío');
+            return;
+        }
+
         db.collection('comments')
             .add({
                 postId: idPost,
@@ -36,6 +44,7 @@ function Comentarios(props) {
             })
             .then(() => {
                 setComentario('');
+                setError('');
             })
             .catch((error) => {
                 setError(error.message);
@@ -45,8 +54,8 @@ function Comentarios(props) {
     function renderComentario({ item }) {
         return (
             <View style={styles.comment}>
-                <Text>{item.data.owner}</Text>
-                <Text>{item.data.text}</Text>
+                <Text style={styles.owner}>{item.data.owner}</Text>
+                <Text style={styles.commentText}>{item.data.text}</Text>
             </View>
         );
     }
@@ -55,28 +64,47 @@ function Comentarios(props) {
         <View style={styles.container}>
             <Text style={styles.title}>Comentarios</Text>
 
-            <TextInput
-                style={styles.field}
-                placeholder="Escribí un comentario"
-                onChangeText={(text) => setComentario(text)}
-                value={comentario}
-            />
+            <View style={styles.formContainer}>
+                <TextInput
+                    style={styles.field}
+                    placeholder="Escribí un comentario"
+                    onChangeText={(text) => setComentario(text)}
+                    value={comentario}
+                    multiline={true}
+                />
 
-            <Text>{error}</Text>
+                {
+                    error !== '' ?
+                        <Text style={styles.error}>{error}</Text>
+                    :
+                        null
+                }
 
-            <Pressable
-                style={styles.button}
-                onPress={() => agregarComentario()}
-            >
-                <Text style={styles.buttonText}>Comentar</Text>
-            </Pressable>
+                <Pressable
+                    style={styles.button}
+                    onPress={() => agregarComentario()}
+                >
+                    <Text style={styles.buttonText}>Comentar</Text>
+                </Pressable>
+            </View>
 
-            <Text>Cantidad: {comentarios.length}</Text>
+            <Text style={styles.subtitle}>
+                Comentarios del post
+            </Text>
+
+            <Text style={styles.count}>
+                Cantidad: {comentarios.length}
+            </Text>
 
             <FlatList
                 data={comentarios}
                 renderItem={renderComentario}
                 keyExtractor={(item) => item.id}
+                ListEmptyComponent={
+                    <Text style={styles.emptyText}>
+                        Todavía no hay comentarios.
+                    </Text>
+                }
             />
         </View>
     );
@@ -85,39 +113,97 @@ function Comentarios(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20
+        padding: 20,
+        backgroundColor: '#fff',
     },
 
     title: {
         fontSize: 24,
-        marginBottom: 20
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+
+    formContainer: {
+        padding: 15,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        borderRadius: 10,
+        backgroundColor: '#f9f9f9',
+        marginBottom: 20,
     },
 
     field: {
+        minHeight: 45,
         borderWidth: 1,
         borderColor: '#ccc',
-        padding: 10,
-        marginBottom: 10
+        borderRadius: 8,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        backgroundColor: '#fff',
+        fontSize: 15,
+        marginBottom: 10,
     },
 
     button: {
         backgroundColor: '#28a745',
-        padding: 10,
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 8,
         alignItems: 'center',
-        marginBottom: 20
+        marginTop: 5,
     },
 
     buttonText: {
         color: '#fff',
-        fontWeight: 'bold'
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+
+    subtitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+
+    count: {
+        fontSize: 14,
+        color: '#555',
+        marginBottom: 12,
     },
 
     comment: {
+        padding: 15,
         borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        marginBottom: 10
-    }
+        borderColor: '#ddd',
+        borderRadius: 10,
+        backgroundColor: '#f9f9f9',
+        marginBottom: 12,
+    },
+
+    owner: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginBottom: 6,
+        color: '#333',
+    },
+
+    commentText: {
+        fontSize: 15,
+        lineHeight: 20,
+        color: '#222',
+    },
+
+    error: {
+        color: 'red',
+        fontSize: 14,
+        marginBottom: 10,
+    },
+
+    emptyText: {
+        color: '#777',
+        fontSize: 15,
+        marginTop: 10,
+    },
 });
 
 export default Comentarios;
