@@ -9,41 +9,34 @@ function Perfil(props) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const user = auth.currentUser;
+    const user = auth.currentUser;
 
-        if (user) {
-            setEmail(user.email);
+    if (user) {
+        db.collection('users')
+            .where('email', '==', user.email)
+            .onSnapshot((docs) => {
+                docs.forEach((doc) => {
+                    setUsername(doc.data().username);
+                });
+            });
 
-            const unsubscribeUsers = db.collection('users')
-                .where('email', '==', user.email)
-                .onSnapshot((docs) => {
-                    docs.forEach((doc) => {
-                        setUsername(doc.data().username);
+        db.collection('posts')
+            .where('owner', '==', user.email)
+            .onSnapshot((docs) => {
+                let posteos = [];
+
+                docs.forEach((doc) => {
+                    posteos.push({
+                        id: doc.id,
+                        data: doc.data()
                     });
                 });
 
-            const unsubscribePosts = db.collection('posts')
-                .where('owner', '==', user.email)
-                .onSnapshot((docs) => {
-                    let posteos = [];
-
-                    docs.forEach((doc) => {
-                        posteos.push({
-                            id: doc.id,
-                            data: doc.data()
-                        });
-                    });
-
-                    setPosts(posteos);
-                    setLoading(false);
-                });
-
-            return () => {
-                unsubscribeUsers();
-                unsubscribePosts();
-            };
-        }
-    }, []);
+                setPosts(posteos);
+                setLoading(false);
+            });
+    }
+}, []);
 
     const logout = () => {
         auth.signOut()
