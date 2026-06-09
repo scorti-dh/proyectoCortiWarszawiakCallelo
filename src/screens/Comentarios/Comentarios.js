@@ -2,22 +2,28 @@ import { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, FlatList, StyleSheet } from 'react-native';
 import { db, auth } from '../../firebase/config';
 
-
 function Comentarios(props) {
    const [comentarios, setComentarios] = useState([]);
    const [comentario, setComentario] = useState('');
    const [error, setError] = useState('');
-
+   const [post, setPost] = useState(null);
 
    const idPost = props.route.params.id;
 
-
    useEffect(() => {
+       db.collection('posts')
+           .doc(idPost)
+           .onSnapshot((doc) => {
+               setPost({
+                   id: doc.id,
+                   data: doc.data()
+               });
+           });
+
        db.collection('comments')
            .where('postId', '==', idPost)
            .onSnapshot((docs) => {
                let comentariosArray = [];
-
 
                docs.forEach((doc) => {
                    comentariosArray.push({
@@ -26,11 +32,9 @@ function Comentarios(props) {
                    });
                });
 
-
                setComentarios(comentariosArray);
            });
    }, []);
-
 
    function agregarComentario() {
        if (comentario === '') {
@@ -53,7 +57,6 @@ function Comentarios(props) {
        }
    }
 
-
    function renderComentario({ item }) {
        return (
            <View style={styles.comment}>
@@ -63,11 +66,20 @@ function Comentarios(props) {
        );
    }
 
-
    return (
        <View style={styles.container}>
            <Text style={styles.title}>Comentarios</Text>
 
+           {post !== null ?
+               <View style={styles.post}>
+                   <Text style={styles.postTitle}>Posteo</Text>
+                   <Text style={styles.owner}>{post.data.owner}</Text>
+                   <Text style={styles.postText}>{post.data.description}</Text>
+               </View>
+           :
+               null
+           }
+ 
            <View style={styles.formContainer}>
                <TextInput
                    style={styles.field}
@@ -86,9 +98,7 @@ function Comentarios(props) {
                </Pressable>
            </View>
 
-
            <Text style={styles.subtitle}>Comentarios del post</Text>
-
 
            <Text style={styles.count}>Cantidad: {comentarios.length}</Text>
 
@@ -106,7 +116,6 @@ function Comentarios(props) {
    );
 }
 
-
 const styles = StyleSheet.create({
    container: {
        flex: 1,
@@ -118,6 +127,26 @@ const styles = StyleSheet.create({
        fontSize: 24,
        fontWeight: 'bold',
        marginBottom: 20,
+   },
+
+   post: {
+       padding: 15,
+       borderWidth: 1,
+       borderColor: '#ddd',
+       borderRadius: 10,
+       backgroundColor: '#eef5ff',
+       marginBottom: 20,
+   },
+
+   postTitle: {
+       fontSize: 16,
+       fontWeight: 'bold',
+       marginBottom: 8,
+   },
+
+   postText: {
+       fontSize: 16,
+       color: '#222',
    },
 
    formContainer: {
@@ -202,6 +231,3 @@ const styles = StyleSheet.create({
 });
 
 export default Comentarios;
-
-
-

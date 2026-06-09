@@ -20,7 +20,7 @@ function CrearPost(props) {
 
                 setDescription('');
 
-props.navigation.navigate('StackNav');
+props.navigation.navigate('StackNav', {screen: "Home"});
             })
             .catch((error) => {
 
