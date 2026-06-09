@@ -12,7 +12,6 @@ function Comentarios(props) {
     useEffect(() => {
         db.collection('comments')
             .where('postId', '==', idPost)
-            .orderBy('createdAt', 'desc')
             .onSnapshot((docs) => {
                 let comentariosArray = [];
 
@@ -71,6 +70,8 @@ function Comentarios(props) {
             >
                 <Text style={styles.buttonText}>Comentar</Text>
             </Pressable>
+
+            <Text>Cantidad: {comentarios.length}</Text>
 
             <FlatList
                 data={comentarios}
