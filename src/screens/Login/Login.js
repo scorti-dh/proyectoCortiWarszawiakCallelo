@@ -13,20 +13,23 @@ function Login(props) {
         props.navigation.navigate('HomeMenu');
       })
       .catch((error) => {
-        setError(error.message);
+        if (error.message.includes('INVALID_LOGIN_CREDENTIALS')) {
+          setError('El email o la contraseña son incorrectas');
+        } else {
+          setError(error.message);
+        }
       });
   }
 
-    useEffect(
+  useEffect(
     () => {
-        auth.onAuthStateChanged(
-            username=>{
-                if(username) {
-                    props.navigation.navigate("HomeMenu")
-                }
-            }
-        )
-    },[]
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          props.navigation.navigate("HomeMenu")
+        }
+      }
+      )
+    }, []
   )
 
   return (
@@ -60,7 +63,7 @@ function Login(props) {
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
 
-        <Pressable 
+        <Pressable
           onPress={() => props.navigation.navigate('Register')}
           style={styles.registerLink}
         >

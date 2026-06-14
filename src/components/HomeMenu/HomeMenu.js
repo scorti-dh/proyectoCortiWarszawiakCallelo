@@ -11,7 +11,11 @@ import StackNav from "../StackNav/StackNav";
 function HomeMenu() {
   return (
     <Tab.Navigator
-      screenOptions={{ tabBarShowLabel: false }}>
+      screenOptions={{
+        tabBarShowLabel: false,
+        headerShown: false
+      }}
+    >
       <Tab.Screen
         name="StackNav"
         component={StackNav}

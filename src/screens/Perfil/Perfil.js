@@ -12,6 +12,8 @@ function Perfil(props) {
     const user = auth.currentUser;
 
     if (user) {
+        setEmail(user.email);
+
         db.collection('users')
             .where('email', '==', user.email)
             .onSnapshot((docs) => {

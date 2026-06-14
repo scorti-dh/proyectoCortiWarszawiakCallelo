@@ -9,6 +9,11 @@ function Register(props) {
   const [error, setError] = useState('');
 
   function register(email, password, username) {
+    if (email === '' || password === '' || username === '') {
+      setError('Todos los campos son obligatorios');
+      return;
+    }
+
     auth.createUserWithEmailAndPassword(email, password)
       .then((response) => {
         db.collection('users').add({
@@ -24,18 +29,6 @@ function Register(props) {
         setError(error.message);
       });
   }
-
-  useEffect(
-    () => {
-        auth.onAuthStateChanged(
-            username=>{
-                if(username) {
-                    props.navigation.navigate("HomeMenu")
-                }
-            }
-        )
-    }, []
-  )
 
   return (
     <View style={styles.container}>
@@ -68,7 +61,7 @@ function Register(props) {
           value={password}
         />
 
-        <Text>{error}</Text>
+        {error !== '' ? <Text style={styles.error}>{error}</Text> : null}
 
         <Pressable
           style={styles.button}

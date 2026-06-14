@@ -8,6 +8,11 @@ function CrearPost(props) {
     const [error, setError] = useState('');
 
     function createPost() {
+        if (description === '') {
+            setError('El post no puede estar vacio');
+            return;
+        }
+
 
         db.collection('posts')
             .add({
